@@ -15,10 +15,14 @@ communicator.Request({
   // the route of the requst, allowed to contain :splats
   route: '/user/:id',
   // optional, called when the request was successful, should return a transformed response value or a Promise that resolves with the desired response value
-  resolve() {},
+  resolve(responseBody, requestBody) {
+    return Promise.resolve(responseBody);
+  },
   // the same as resolve but for failed requests,
   // this allows you to resolve a Request even if its actual request failed
-  reject() {}
+  reject(responseBody, requestBody) {
+    return Promise.reject(responseBody);
+  }
 });
 ```
 

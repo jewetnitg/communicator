@@ -7,4 +7,4 @@ The following gulp tasks are available.
 * gh-pages - publishes the documentation of this project to github pages
 * jsdoc - creates documentation
 * publish - creates documentation and publishes it to gh-pages
-* tar creates a tar.gz archive of the build
+* tar - creates a tar.gz achive of the build

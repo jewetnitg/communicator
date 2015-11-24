@@ -68,3 +68,4 @@ For more information, please read the {@tutorial walkthrough}, for even more inf
 TODOs
 =====
 * Add an upload method to the {@link Adapter} spec, add an upload method to {@link Connection} and add an upload flag to {@link Request}
+* Allow cache lifetime to be configured on Request and Connection level, where Request has precedence

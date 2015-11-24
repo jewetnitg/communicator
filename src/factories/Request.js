@@ -141,7 +141,11 @@ Request.prototype = {
           url: replaceSplatsInRouteWithData(this.route, splats),
           data: _data,
           method: this.method
-        }).then(this.resolve, this.reject);
+        }).then((__data) => {
+          return this.resolve(__data, data);
+        }, (__data) => {
+          return this.reject(__data, data);
+        });
       });
   },
 
