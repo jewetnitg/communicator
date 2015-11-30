@@ -4,7 +4,7 @@
 import AdapterValidator from '../../src/validators/Adapter';
 // @todo: refactor some tests to validators/Adapters.spec.js
 // validate AdapterValidator.constructor is called
-describe(`Adapter`, () => {
+describe(`AdapterValidator`, () => {
 
   it(`should be a function`, (done) => {
     expect(AdapterValidator).to.be.an('object');
@@ -19,6 +19,7 @@ describe(`Adapter`, () => {
     beforeEach(done => {
       validAdapterValidatorOptions = {
         name: 'adapter' + i,
+        communicator: {},
         request: Promise.resolve.bind(Promise),
         connect: Promise.resolve.bind(Promise),
         disconnect: Promise.resolve.bind(Promise)
@@ -26,6 +27,7 @@ describe(`Adapter`, () => {
 
       validAdapterValidatorOptionsWithEvents = {
         name: 'adapter' + i,
+        communicator: {},
         request: Promise.resolve.bind(Promise),
         connect: Promise.resolve.bind(Promise),
         disconnect: Promise.resolve.bind(Promise),
@@ -42,16 +44,16 @@ describe(`Adapter`, () => {
     });
 
     it(`should throw an error when called without a name`, (done) => {
-      delete validAdapterValidatorOptions.name;
       expect(function () {
+        delete validAdapterValidatorOptions.name;
         return AdapterValidator.construct(validAdapterValidatorOptions)
       }).to.throw(Error);
       done();
     });
 
     it(`should throw an error when called without a request method`, (done) => {
-      delete validAdapterValidatorOptions.request;
       expect(function () {
+        delete validAdapterValidatorOptions.request;
         return AdapterValidator.construct(validAdapterValidatorOptions)
       }).to.throw(Error);
       done();

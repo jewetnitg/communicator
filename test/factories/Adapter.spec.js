@@ -20,7 +20,15 @@ describe(`Adapter`, () => {
     let validAdapterObjectWithEvents = null;
 
     beforeEach((done) => {
+      const communicator = {
+        requests: {},
+        servers: {},
+        connections: {},
+        adapters: {},
+        options: {}
+      };
       validAdapterObject = {
+        communicator,
         name: 'adapter' + i,
         request: Promise.resolve.bind(Promise),
         connect: Promise.resolve.bind(Promise),
