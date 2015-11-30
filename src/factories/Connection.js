@@ -1,6 +1,7 @@
 import _ from 'lodash';
 
 import ConnectionValidator from '../validators/Connection';
+import Request from './Request';
 import concatenateUrls from '../helpers/concatenateUrls';
 
 /**
@@ -34,7 +35,7 @@ function Connection(options = {}) {
   options.communicator.requests[options.name] = {};
   options.communicator.servers[options.name] = {};
 
-  const connection = options.communicator.connections[options.name] = Object.create(Connection.prototype, {
+  const props = {
     name: {
       value: options.name
     },
@@ -45,16 +46,20 @@ function Connection(options = {}) {
       value: options.communicator.adapters[options.adapter]
     },
 
+    communicator: {
+      value: options.communicator
+    },
+
     /**
      * @name requests
      * @memberof Connection
      * @type Object<Request|Object<Request>>
      * @instance
      * @example
-     * // context and name refer to the context and name of a request
-     * connection.requests.context.name.execute(splat1, splat2, requestBody)
+     * // request name is 'deep.name' in this case
+     * connection.requests.deep.name.execute(splat1, splat2, requestBody)
      *   .then(...);
-     * // requests without a context are called like this
+     * // request name is 'name' in this case
      * connection.requests.name.execute(splat1, splat2, requestBody)
      *   .then(...);
      */
@@ -68,20 +73,23 @@ function Connection(options = {}) {
      * @type Object<Function|Object<Function>>
      * @instance
      * @example
-     * // context and name refer to the context and name of a request
-     * connection.server.context.name(splat1, splat2, requestBody)
+     * // request name is 'deep.name' in this case
+     * connection.server.deep.name(splat1, splat2, requestBody)
      *   .then(...);
-     * // requests without a context are called like this
+     * // request name is 'name' in this case
      * connection.server.name(splat1, splat2, requestBody)
      *   .then(...);
      */
     server: {
       value: options.communicator.servers[options.name]
-    },
-
-    communicator: {
-      value: options.communicator
     }
+  };
+
+  const connection = options.communicator.connections[options.name] = Object.create(Connection.prototype, props);
+
+  _.each(options.requests, (request, name) => {
+    request.name = request.name || name;
+    connection.Request(request);
   });
 
   // backbone like events hashmap for server events
@@ -101,6 +109,24 @@ function Connection(options = {}) {
 Connection.prototype = {
 
   connected: false,
+
+  /**
+   * Adds a {@link Request} to this {@link Connection}
+   *
+   * @method Request
+   * @memberof Connection
+   * @instance
+   *
+   * @param options {Object} Options for the {@link Request}
+   *
+   * @returns {Request}
+   */
+  Request(options) {
+    options.connection = this.name;
+    options.communicator = this.communicator;
+
+    return Request(options);
+  },
 
   /**
    * Connects this Connection to the server using its url and adapter.
@@ -252,7 +278,7 @@ Connection.prototype = {
    */
   post(url, data) {
     return this.request({
-      method: 'get',
+      method: 'post',
       url,
       data
     });
@@ -272,7 +298,7 @@ Connection.prototype = {
    */
   put(url, data) {
     return this.request({
-      method: 'get',
+      method: 'put',
       url,
       data
     });
@@ -292,7 +318,7 @@ Connection.prototype = {
    */
   delete(url, data) {
     return this.request({
-      method: 'get',
+      method: 'delete',
       url,
       data
     });

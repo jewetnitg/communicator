@@ -91,7 +91,7 @@ function Communicator(options = {}) {
   runFactory(communicator.Connection, options.connections, {
     adapter: options.defaultAdapter
   });
-  runFactory(communicator.Request, options.connections, {
+  runFactory(communicator.Request, options.requests, {
     connection: options.defaultConnection
   });
 
@@ -166,8 +166,7 @@ Communicator.prototype = {
    * @returns {Request}
    * @example
    * const request = communicator.Request({
-   *   context: 'user',
-   *   name: 'login',
+   *   name: 'user.login',
    *   connection: 'local-xhr',
    *   route: '/user/login',
    *   method: 'get,

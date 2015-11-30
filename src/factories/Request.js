@@ -8,25 +8,31 @@ import replaceSplatsInRouteWithData from '../helpers/replaceSplatsInRouteWithDat
 import extractSplatsFromRoute from '../helpers/extractSplatsFromRoute';
 
 /**
+ * A {@link Request} represents a blueprint for a request to the server, it uses a {@link Connection} and the properties listed below to do so.
  *
  * @class Request
  *
  * @param {Object}[options={}] Object containing the properties specified below
  *
- * @property context {String} The context of this request, typically its server controller or model
- * @property name {String} The name, specific to the context
+ * @property name {String} The name, specific, behaves like a path (name: 'user.login' will result in requests.user.login)
+ *
  * @property connection {String} The name of the {@link Connection} this {@link Request} should use to execute itself
+ *
  * @property route {String} The route of this {@link Request}, '/user/:id' for example
+ *
  * @property method {String} The HTTP method of this {@link Request}, 'get', 'post', 'put' or 'delete'
+ *
  * @property {Function} [transform=Promise.resolve] Function that is called before a {@link Request} is executed, allows for transformations to be applied to the request body, can work asynchronously by returning a Promise that resolves with the transformed value, if it is synchronous the transformed value can just be returned.
+ *
  * @property {Function} [resolve=Promise.resolve] Function that is called when the {@link Request} is executed successfully, allows for data response body transformation, can work asynchronously by returning a Promise, if synchronous can just return the value. Even allows for rejecting a resolved request.
+ *
  * @property {Function} [reject=Promise.reject] Function that is called when the {@link Request} is executed unsuccessfully, allows for data response body transformation, can work asynchronously by returning a Promise, if synchronous can just return the value. Even allows for resolving a rejected request.
  *
  * @returns {Request}
+ *
  * @example
  * cons request = Request({
- *   name: 'findById',
- *   context: 'user',
+ *   name: 'user.findById',
  *   connection: 'local-xhr',
  *   route: '/user/:id',
  *   method: 'get',
@@ -92,20 +98,10 @@ function Request(options = {}) {
     }
   };
 
-  if (options.context) {
-    dst[options.context] = dst[options.context] || {};
-    serverDst[options.context] = serverDst[options.context] || {};
-    dst = dst[options.context];
-    serverDst = serverDst[options.context];
-    props.context = {
-      value: options.context
-    };
-  }
+  const request = Object.create(Request.prototype, props);
 
-
-  const request = dst[options.name] = Object.create(Request.prototype, props);
-
-  serverDst[options.name] = request.execute.bind(request);
+  _.set(dst, options.name, request);
+  _.set(serverDst, options.name, request.execute.bind(request));
 
   return request;
 }

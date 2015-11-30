@@ -1,6 +1,7 @@
 /**
  * @author rik
  */
+import _ from 'lodash';
 import dataSatisfiesRoute from '../helpers/dataSatisfiesRoute';
 
 const requestValidator = {
@@ -14,35 +15,28 @@ const requestValidator = {
       throw new Error(`Request doesn't have a communicator instance in its options.`);
     }
 
-    if (options.context && typeof options.context !== 'string') {
-      throw new Error(`No context on Request ${options.name} is not a string.`);
-    }
-
     if (typeof options.connection !== 'string') {
-      throw new Error(`Request '${options.context}.${options.name}' doesn't have an c defined on it`);
+      throw new Error(`Request '${options.name}' doesn't have an c defined on it`);
     }
 
     if (options.communicator.connections[options.connection] === 'undefined') {
-      throw new Error(`The Connection '${options.adapter}' specified on Request '${options.context}.${options.name}' doesn't exist.`);
+      throw new Error(`The Connection '${options.adapter}' specified on Request '${options.name}' doesn't exist.`);
     }
 
-    const _requests = options.communicator.requests[options.connection];
-    const obj = options.context ? _requests[options.context] : _requests[options.connection];
-
-    if (obj && typeof obj[options.name] !== 'undefined') {
-      throw new Error(`Request with context '${options.context}' and name '${options.name}' already exists.`);
+    if (_.get(options.communicator.requests[options.connection], options.name)) {
+      throw new Error(`Request with name '${options.name}' already exists.`);
     }
 
     if (typeof options.route !== 'string') {
-      throw new Error(`Request '${options.context}.${options.name}' doesn't have a url defined on it`);
+      throw new Error(`Request '${options.name}' doesn't have a url defined on it`);
     }
 
     if (typeof options.method !== 'string') {
-      throw new Error(`Request '${options.context}.${options.name}' doesn't have a method defined on it`);
+      throw new Error(`Request '${options.name}' doesn't have a method defined on it`);
     }
 
     if (['get', 'post', 'put', 'delete'].indexOf(options.method) === -1) {
-      throw new Error(`Can't construct Request '${options.context}.${options.name}', method '${options.method}' is not a valid method.`);
+      throw new Error(`Can't construct Request '${options.name}', method '${options.method}' is not a valid method.`);
     }
   },
 
@@ -58,7 +52,7 @@ const requestValidator = {
     }
 
     if (!dataSatisfiesRoute(request.route, splats)) {
-      throw new Error(`Can't execute Request '${request.context}.${request.name}', data object doesn't satisfy all splats in the route.`);
+      throw new Error(`Can't execute Request '${request.name}', data object doesn't satisfy all splats in the route.`);
     }
   }
 
