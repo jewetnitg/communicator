@@ -2,15 +2,15 @@
 
 Below is an example implementation of a {@link Request}
 ```
-import communicator from 'frontend-communicator'
+import communicator from './communicator';
 
 communicator.Request({
 
-  // optional, if ommitted request will be 'global'
+  // optional, if ommitted request will be global
   context: 'user',
   // name of the request, if context specified, specific to its context
   name: 'findById',
-  // the connection to execute this request with
+  // the connection to execute this request with, otherwise uses the default specified in the communicator
   connection: 'local-xhr',
   // the route of the requst, allowed to contain :splats
   route: '/user/:id',

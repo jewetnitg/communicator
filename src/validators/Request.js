@@ -1,9 +1,6 @@
 /**
  * @author rik
  */
-import requests from '../singletons/requests';
-import connections from '../singletons/connections';
-import adapters from '../singletons/adapters';
 import dataSatisfiesRoute from '../helpers/dataSatisfiesRoute';
 
 const requestValidator = {
@@ -11,6 +8,10 @@ const requestValidator = {
   construct(options = {}) {
     if (typeof options.name !== 'string') {
       throw new Error(`No name provided on Request.`);
+    }
+
+    if (typeof options.communicator === 'undefined') {
+      throw new Error(`Request doesn't have a communicator instance in its options.`);
     }
 
     if (options.context && typeof options.context !== 'string') {
@@ -21,11 +22,11 @@ const requestValidator = {
       throw new Error(`Request '${options.context}.${options.name}' doesn't have an c defined on it`);
     }
 
-    if (connections[options.connection] === 'undefined') {
+    if (options.communicator.connections[options.connection] === 'undefined') {
       throw new Error(`The Connection '${options.adapter}' specified on Request '${options.context}.${options.name}' doesn't exist.`);
     }
 
-    const _requests = requests[options.connection];
+    const _requests = options.communicator.requests[options.connection];
     const obj = options.context ? _requests[options.context] : _requests[options.connection];
 
     if (obj && typeof obj[options.name] !== 'undefined') {
@@ -50,7 +51,7 @@ const requestValidator = {
       throw new Error(`Can't execute Request ${this.name}, no connection provided.`)
     }
 
-    const _connection = typeof connection === 'string' ? connections[connection] : connection;
+    const _connection = typeof connection === 'string' ? request.communicator.connections[connection] : connection;
 
     if (!_connection) {
       throw new Error(`Can't execute Request ${this.name}, Connection '${connection}' not found.`)

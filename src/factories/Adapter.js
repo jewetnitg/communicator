@@ -3,7 +3,6 @@ import _ from 'lodash';
 import LazyLoader from './LazyLoader';
 
 import AdapterValidator from '../validators/Adapter';
-import adapters from '../singletons/adapters';
 
 /**
  * This function creates an Adapter.
@@ -58,7 +57,7 @@ function Adapter(options = {}) {
   // validates the options object contains all properties needed to create an Adapter
   AdapterValidator.construct(options);
 
-  const adapter = adapters[options.name] = _.extend({
+  const adapter = options.communicator.adapters[options.name] = _.extend({
     events: false
   }, options);
 

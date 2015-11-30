@@ -3,12 +3,13 @@ Communicator
 
 This npm module serves as an abstraction for communications with the server
 
-Adding it to a project
-======================
+Adding it to a browserify project
+=================================
 
 ```
 npm install frontend-communicator --save
 ```
+Alternatively the build can be downloaded <a href="build.tar.gz">here</a>
 
 Installing
 ==========

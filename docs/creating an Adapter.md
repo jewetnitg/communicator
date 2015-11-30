@@ -2,7 +2,7 @@
 
 Below is an example implementation of an XHR adapter that uses jQuery to do it's transport
 ```
-import communicator from 'frontend-communicator'
+import communicator from './communicator'
 
 const XhrAdapter = communicator.Adapter({
 

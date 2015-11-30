@@ -1,7 +1,6 @@
 /**
  * @author rik
  */
-import adapters from '../singletons/adapters';
 
 const adapterValidator = {
 
@@ -10,7 +9,11 @@ const adapterValidator = {
       throw new Error(`No name provided on Adapter`);
     }
 
-    if (typeof adapters[options.name] !== 'undefined') {
+    if (typeof options.communicator === 'undefined') {
+      throw new Error(`Adapter doesn't have a communicator instance in its options.`);
+    }
+
+    if (typeof options.communicator.adapters[options.name] !== 'undefined') {
       throw new Error(`Adapter with name '${options.name}' already exists`);
     }
 

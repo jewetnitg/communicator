@@ -1,3 +1,3 @@
-import communicator from './src/communicator';
+import Communicator from './src/factories/Communicator';
 
-export default communicator;
+export default Communicator;

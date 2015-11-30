@@ -4,9 +4,6 @@
 import _ from 'lodash';
 
 import RequestValidator from '../validators/Request';
-import connections from '../singletons/connections';
-import requests from '../singletons/requests';
-import servers from '../singletons/servers';
 import replaceSplatsInRouteWithData from '../helpers/replaceSplatsInRouteWithData';
 import extractSplatsFromRoute from '../helpers/extractSplatsFromRoute';
 
@@ -55,15 +52,16 @@ import extractSplatsFromRoute from '../helpers/extractSplatsFromRoute';
  */
 function Request(options = {}) {
   RequestValidator.construct(options);
-  let dst = requests[options.connection];
-  let serverDst = servers[options.connection];
+
+  let dst = options.communicator.requests[options.connection];
+  let serverDst = options.communicator.servers[options.connection];
 
   const props = {
     name: {
       value: options.name
     },
     connection: {
-      value: connections[options.connection]
+      value: options.communicator.connections[options.connection]
     },
     route: {
       value: options.route
@@ -88,6 +86,9 @@ function Request(options = {}) {
     },
     splats: {
       value: extractSplatsFromRoute(options.route)
+    },
+    communicator: {
+      value: options.communicator
     }
   };
 
@@ -133,7 +134,7 @@ Request.prototype = {
 
     RequestValidator.executeWithConnection(this, connection, splats);
 
-    const _connection = typeof connection === 'string' ? connections[connection] : connection;
+    const _connection = typeof connection === 'string' ? this.communicator.connections[connection] : connection;
 
     return this.transform(data)
       .then((_data) => {

@@ -1,9 +1,6 @@
 /**
  * @author rik
  */
-import connections from '../singletons/connections';
-import adapters from '../singletons/adapters';
-
 const connectionValidator = {
 
   construct(options = {}) {
@@ -11,7 +8,11 @@ const connectionValidator = {
       throw new Error(`No name provided on Connection`);
     }
 
-    if (typeof connections[options.name] !== 'undefined') {
+    if (typeof options.communicator === 'undefined') {
+      throw new Error(`Connection doesn't have a communicator instance in its options.`);
+    }
+
+    if (typeof options.communicator.connections[options.name] !== 'undefined') {
       throw new Error(`Connection with name '${options.name}' already exists`);
     }
 
@@ -23,7 +24,7 @@ const connectionValidator = {
       throw new Error(`Connection '${options.name}' doesn't have an adapter defined on it`);
     }
 
-    if (adapters[options.adapter] === 'undefined') {
+    if (options.communicator.adapters[options.adapter] === 'undefined') {
       throw new Error(`The Adapter '${options.adapter}' specified on Connection '${options.name}' doesn't exist.`);
     }
   }

@@ -1,11 +1,6 @@
 import _ from 'lodash';
 
 import ConnectionValidator from '../validators/Connection';
-import connections from '../singletons/connections';
-import adapters from '../singletons/adapters';
-import requests from '../singletons/requests';
-import servers from '../singletons/servers';
-
 import concatenateUrls from '../helpers/concatenateUrls';
 
 /**
@@ -36,10 +31,10 @@ function Connection(options = {}) {
   ConnectionValidator.construct(options);
 
   // initialize the Connections requests as an empty object
-  requests[options.name] = {};
-  servers[options.name] = {};
+  options.communicator.requests[options.name] = {};
+  options.communicator.servers[options.name] = {};
 
-  const connection = connections[options.name] = Object.create(Connection.prototype, {
+  const connection = options.communicator.connections[options.name] = Object.create(Connection.prototype, {
     name: {
       value: options.name
     },
@@ -47,7 +42,7 @@ function Connection(options = {}) {
       value: options.url
     },
     adapter: {
-      value: adapters[options.adapter]
+      value: options.communicator.adapters[options.adapter]
     },
 
     /**
@@ -64,7 +59,7 @@ function Connection(options = {}) {
      *   .then(...);
      */
     requests: {
-      value: requests[options.name]
+      value: options.communicator.requests[options.name]
     },
 
     /**
@@ -81,7 +76,11 @@ function Connection(options = {}) {
      *   .then(...);
      */
     server: {
-      value: servers[options.name]
+      value: options.communicator.servers[options.name]
+    },
+
+    communicator: {
+      value: options.communicator
     }
   });
 
@@ -217,30 +216,88 @@ Connection.prototype = {
    */
   emit(event, data) {
     this.adapter.emit(event, data);
+  },
+
+  /**
+   * Does a GET request using this {@link Connection}
+   *
+   * @method get
+   * @memberof Connection
+   * @instance
+   *
+   * @returns Promise
+   * @example
+   * connection.get('/user', {id: 3})
+   *   .then(...);
+   */
+  get(url, data) {
+    return this.request({
+      method: 'get',
+      url,
+      data
+    });
+  },
+
+  /**
+   * Does a POST request using this {@link Connection}
+   *
+   * @method post
+   * @memberof Connection
+   * @instance
+   *
+   * @returns Promise
+   * @example
+   * connection.post('/user', {id: 3, firstName: 'asd'})
+   *   .then(...);
+   */
+  post(url, data) {
+    return this.request({
+      method: 'get',
+      url,
+      data
+    });
+  },
+
+  /**
+   * Does a PUT request using this {@link Connection}
+   *
+   * @method put
+   * @memberof Connection
+   * @instance
+   *
+   * @returns Promise
+   * @example
+   * connection.put('/user/3', {id: 3, firstName: 'rsgsrg'})
+   *   .then(...);
+   */
+  put(url, data) {
+    return this.request({
+      method: 'get',
+      url,
+      data
+    });
+  },
+
+  /**
+   * Does a DELETE request using this {@link Connection}
+   *
+   * @method delete
+   * @memberof Connection
+   * @instance
+   *
+   * @returns Promise
+   * @example
+   * connection.delete('/user/3')
+   *   .then(...);
+   */
+  delete(url, data) {
+    return this.request({
+      method: 'get',
+      url,
+      data
+    });
   }
 
 };
-
-// makes convenience methods for, get, post, put and delete requests
-function addConvenienceMethodsToConnection() {
-  const methods = [
-    'get',
-    'post',
-    'put',
-    'delete'
-  ];
-
-  _.each(methods, (method) => {
-    Connection.prototype[method] = function (url, data) {
-      return this.request({
-        url,
-        data,
-        method
-      });
-    };
-  });
-}
-
-addConvenienceMethodsToConnection();
 
 export default Connection;
