@@ -22,7 +22,7 @@ import extractSplatsFromRoute from '../helpers/extractSplatsFromRoute';
  *
  * @property method {String} The HTTP method of this {@link Request}, 'get', 'post', 'put' or 'delete'
  *
- * @property {Function} [transform=Promise.resolve] Function that is called before a {@link Request} is executed, allows for transformations to be applied to the request body, can work asynchronously by returning a Promise that resolves with the transformed value, if it is synchronous the transformed value can just be returned.
+ * @property {Function} [prepare=Promise.resolve] Function that is called just before a {@link Request} is executed, allows for transformations to be applied to the request body, it can work asynchronously by returning a Promise that resolves with the transformed value, if it is synchronous the transformed value can just be returned.
  *
  * @property {Function} [resolve=Promise.resolve] Function that is called when the {@link Request} is executed successfully, allows for data response body transformation, can work asynchronously by returning a Promise, if synchronous can just return the value. Even allows for rejecting a resolved request.
  *
@@ -37,7 +37,7 @@ import extractSplatsFromRoute from '../helpers/extractSplatsFromRoute';
  *   route: '/user/:id',
  *   method: 'get',
  *   // can also return a Promise that resolves with the transformed data, if the transformation is asynchronous
- *   transform(data) {
+ *   prepare(data) {
  *     delete data.someValueOnlyRequiredByTheClient
  *     return data;
  *   },
@@ -72,12 +72,12 @@ function Request(options = {}) {
     route: {
       value: options.route
     },
-    transform: {
-      // ensure transform returns a Promise
+    prepare: {
+      // ensure prepare returns a Promise
       value(data) {
         return Promise.resolve()
           .then(() => {
-            return (options.transform ? options.transform.bind(this) : Promise.resolve.bind(Promise))(data);
+            return (options.prepare ? options.prepare.bind(this) : Promise.resolve.bind(Promise))(data);
           })
       }
     },
@@ -132,7 +132,7 @@ Request.prototype = {
 
     const _connection = typeof connection === 'string' ? this.communicator.connections[connection] : connection;
 
-    return this.transform(data)
+    return this.prepare(data)
       .then((_data) => {
         return _connection.request({
           url: replaceSplatsInRouteWithData(this.route, splats),
