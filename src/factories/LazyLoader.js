@@ -120,12 +120,12 @@ LazyLoader.prototype = {
 
     if (cache.state !== LazyLoader.STATES.DONE) {
       // if the cache is NOT done, return a Promise that is resolved once it IS done
-      return new Promise(resolve => {
-        cache.callbacks.push(resolve);
+      return new Promise((resolve, reject) => {
+        cache.callbacks.push({resolve, reject});
       });
     } else {
       // if the cache is done, resolve with its result
-      return Promise.resolve(cache.result);
+      return Promise[cache.rejected ? 'reject' : 'resolve'](cache.result);
     }
   },
 
@@ -154,25 +154,28 @@ LazyLoader.prototype = {
     this.resolver.apply(undefined, args)
       .then((data) => {
         this.resolveCache(cache, data);
+      }, (data) => {
+        this.resolveCache(cache, data, true);
       });
 
     return cache;
   },
 
-  resolveCache(cache, result) {
+  resolveCache(cache, result, reject) {
     // start the cache timeOut now, so from the moment a value is acquired, the value will be available for this.lifetime ms
     cache.timeOut = setTimeout(() => {
       this.removeCache(cache);
     }, this.lifetime);
 
     cache.state = LazyLoader.STATES.DONE;
+    cache.rejected = !!reject;
     cache.result = result;
 
     // the callback property on a cache contains resolve functions,
     // run all of them to resolve all calls to the resolver while it was busy,
     // this includes the initial call
     _.each(cache.callbacks, (callback) => {
-      callback(cache.result);
+      callback[reject ? 'reject' : 'resolve'](cache.result);
     });
   },
 

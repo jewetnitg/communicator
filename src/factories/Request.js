@@ -31,6 +31,7 @@ import extractSplatsFromRoute from '../helpers/extractSplatsFromRoute';
  * @returns {Request}
  *
  * @todo add support for policies on requests
+ * @todo allow requests not to be cached, like a login request for example
  *
  * @example
  * cons request = Request({
@@ -137,15 +138,16 @@ Request.prototype = {
     return this.prepare(data)
       .then((_data) => {
         return _connection.request({
-          url: replaceSplatsInRouteWithData(this.route, splats),
-          data: _data,
-          method: this.method
-        }).then((__data) => {
-          return this.resolve(__data, data);
-        })
-        .catch((__data) => {
-          return this.reject(__data, data);
-        })
+            url: replaceSplatsInRouteWithData(this.route, splats),
+            data: _data,
+            method: this.method
+          })
+          .then((__data) => {
+            return this.resolve(__data, data);
+          })
+          .catch((__data) => {
+            return this.reject(__data, data);
+          })
       });
   },
 
