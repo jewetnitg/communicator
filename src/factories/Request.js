@@ -30,6 +30,8 @@ import extractSplatsFromRoute from '../helpers/extractSplatsFromRoute';
  *
  * @returns {Request}
  *
+ * @todo add support for policies on requests
+ *
  * @example
  * cons request = Request({
  *   name: 'user.findById',

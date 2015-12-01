@@ -27,6 +27,8 @@ const singletons = {
  * @property requests {Object<Object>} {@link Request}s that should be registered on construct
  *
  * @todo validate options
+ * @todo allow for policies to be passed in when constructing
+ * @todo auto-set a name if none is provided
  *
  * @example
  * import Communicator from 'frontend-communicator';
