@@ -142,9 +142,10 @@ Request.prototype = {
           method: this.method
         }).then((__data) => {
           return this.resolve(__data, data);
-        }, (__data) => {
+        })
+        .catch((__data) => {
           return this.reject(__data, data);
-        });
+        })
       });
   },
 
