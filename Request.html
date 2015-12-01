@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=yes, width=device-width">
+  <title>COMMUNICATOR — Class: Request</title>
+  <link rel="shortcut icon" href="/favicon.ico">
+
+  <!--[if lt IE 9]>
+  <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link type="text/css" rel="stylesheet" href="styles/sunlight.dark.css">
+
+  <link type="text/css" rel="stylesheet" href="styles/site.oblivion.css">
+</head>
+<body>
+<div class="container-fluid">
+  <div class="navbar navbar-fixed-top navbar-inverse">
+    <div class="navbar-inner">
+      <a class="brand" href="index.html">COMMUNICATOR</a>
+      <ul class="nav">
+        
+        <li class="dropdown">
+          <a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b
+            class="caret"></b></a>
+
+          <ul class="dropdown-menu ">
+            
+            <li>
+              <a href="module-LazyLoader.html">LazyLoader</a>
+            </li>
+            
+
+          </ul>
+        </li>
+        
+        <li class="dropdown">
+          <a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b
+            class="caret"></b></a>
+
+          <ul class="dropdown-menu ">
+            
+            <li>
+              <a href="Adapter.html">Adapter</a>
+            </li>
+            
+            <li>
+              <a href="Communicator.html">Communicator</a>
+            </li>
+            
+            <li>
+              <a href="Connection.html">Connection</a>
+            </li>
+            
+            <li>
+              <a href="Request.html">Request</a>
+            </li>
+            
+
+          </ul>
+        </li>
+        
+        <li class="dropdown">
+          <a href="tutorials.list.html" class="dropdown-toggle" data-toggle="dropdown">Tutorials<b
+            class="caret"></b></a>
+
+          <ul class="dropdown-menu ">
+            
+            <li>
+              <a href="tutorial-README.html">README</a>
+            </li>
+            
+            <li>
+              <a href="tutorial-build.html">build</a>
+            </li>
+            
+            <li>
+              <a href="tutorial-creating a Communicator.html">creating a Communicator</a>
+            </li>
+            
+            <li>
+              <a href="tutorial-creating a Connection.html">creating a Connection</a>
+            </li>
+            
+            <li>
+              <a href="tutorial-creating a Request.html">creating a Request</a>
+            </li>
+            
+            <li>
+              <a href="tutorial-creating an Adapter.html">creating an Adapter</a>
+            </li>
+            
+            <li>
+              <a href="tutorial-npm scripts.html">npm scripts</a>
+            </li>
+            
+            <li>
+              <a href="tutorial-walkthrough.html">walkthrough</a>
+            </li>
+            
+
+          </ul>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  <div class="row-fluid">
+
+    
+    <div class="span3">
+      <div id="toc"></div>
+    </div>
+    
+
+    
+    <div class="span9">
+      
+        <div id="main">
+          
+
+
+	<h1 class="page-title">Class: Request</h1>
+<section>
+
+<header>
+    <h2>
+    Request
+    </h2>
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+
+    
+        
+<dt>
+    <h4 class="name" id="Request"><span class="type-signature"></span>new Request<span class="signature">(<span class="optional">options</span>)</span><span class="type-signature"> &rarr; {<a href="Request.html">Request</a>}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        A <a href="Request.html"><code>Request</code></a> represents a blueprint for a request to the server, it uses a <a href="Connection.html"><code>Connection</code></a> and the properties listed below to do so.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+<div class="params-table-container">
+  <table class="params table table-striped">
+      <thead>
+    <tr>
+      
+      <th>Name</th>
+      
+  
+      <th>Type</th>
+  
+      
+      <th>Argument</th>
+      
+  
+      
+      <th>Default</th>
+      
+  
+      <th class="last">Description</th>
+    </tr>
+    </thead>
+  
+    <tbody>
+    
+  
+          <tr>
+              
+                  <td class="name"><code>options</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">Object</span>
+
+
+              
+              </td>
+  
+              
+                  <td class="attributes">
+                  
+                      &lt;optional><br>
+                  
+  
+                  
+  
+                  
+                  </td>
+              
+  
+              
+                  <td class="default">
+                  
+                      {}
+                  
+                  </td>
+              
+  
+              <td class="description last">Object containing the properties specified below</td>
+          </tr>
+  
+    
+    </tbody>
+  </table>
+</div>
+
+    
+    
+    
+<dl class="details">
+  
+
+  <h5 class="subsection-title">Properties:</h5>
+
+  <dl>
+
+<table class="props table table-striped">
+    <thead>
+  <tr>
+    
+    <th>Name</th>
+    
+
+    <th>Type</th>
+
+    
+    <th>Argument</th>
+    
+
+    
+    <th>Default</th>
+    
+
+    <th class="last">Description</th>
+  </tr>
+  </thead>
+
+  <tbody>
+  
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last">The name, specific, behaves like a path (name: 'user.login' will result in requests.user.login)</td>
+        </tr>
+
+  
+
+        <tr>
+            
+                <td class="name"><code>connection</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last">The name of the <a href="Connection.html"><code>Connection</code></a> this <a href="Request.html"><code>Request</code></a> should use to execute itself</td>
+        </tr>
+
+  
+
+        <tr>
+            
+                <td class="name"><code>route</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last">The route of this <a href="Request.html"><code>Request</code></a>, '/user/:id' for example</td>
+        </tr>
+
+  
+
+        <tr>
+            
+                <td class="name"><code>method</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last">The HTTP method of this <a href="Request.html"><code>Request</code></a>, 'get', 'post', 'put' or 'delete'</td>
+        </tr>
+
+  
+
+        <tr>
+            
+                <td class="name"><code>prepare</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    Promise.resolve
+                
+                </td>
+            
+
+            <td class="description last">Function that is called just before a <a href="Request.html"><code>Request</code></a> is executed, allows for transformations to be applied to the request body, it can work asynchronously by returning a Promise that resolves with the transformed value, if it is synchronous the transformed value can just be returned.</td>
+        </tr>
+
+  
+
+        <tr>
+            
+                <td class="name"><code>resolve</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    Promise.resolve
+                
+                </td>
+            
+
+            <td class="description last">Function that is called when the <a href="Request.html"><code>Request</code></a> is executed successfully, allows for data response body transformation, can work asynchronously by returning a Promise, if synchronous can just return the value. Even allows for rejecting a resolved request.</td>
+        </tr>
+
+  
+
+        <tr>
+            
+                <td class="name"><code>reject</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    Promise.reject
+                
+                </td>
+            
+
+            <td class="description last">Function that is called when the <a href="Request.html"><code>Request</code></a> is executed unsuccessfully, allows for data response body transformation, can work asynchronously by returning a Promise, if synchronous can just return the value. Even allows for resolving a rejected request.</td>
+        </tr>
+
+  
+  </tbody>
+</table>
+</dl>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+
+  
+
+  
+
+  
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+
+
+<dl>
+  <dt>
+    Type
+  </dt>
+  <dd>
+    
+<span class="param-type"><a href="Request.html">Request</a></span>
+
+
+  </dd>
+</dl>
+
+
+        
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">cons request = Request({
+  name: &#x27;user.findById&#x27;,
+  connection: &#x27;local-xhr&#x27;,
+  route: &#x27;/user/:id&#x27;,
+  method: &#x27;get&#x27;,
+  // can also return a Promise that resolves with the transformed data, if the transformation is asynchronous
+  prepare(data) {
+    delete data.someValueOnlyRequiredByTheClient
+    return data;
+  },
+  resolve(data) {
+    return new Promise((resolve, reject) =&gt; {
+       // .. do stuff to transform data or even reject the promise
+       resolve(data);
+    });
+  },
+  reject(data) {
+    return new Promise((resolve, reject) =&gt; {
+       // .. do stuff to transform data or even resolve the promise
+       reject(data);
+    });
+  }
+});</pre>
+
+
+    
+</dd>
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        <dl>
+            
+<dt>
+    <h4 class="name" id="execute"><span class="type-signature"></span>execute<span class="signature">(args)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Executes the <a href="Request.html"><code>Request</code></a> using its own <a href="Connection.html"><code>Connection</code></a>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+<div class="params-table-container">
+  <table class="params table table-striped">
+      <thead>
+    <tr>
+      
+      <th>Name</th>
+      
+  
+      <th>Type</th>
+  
+      
+      <th>Argument</th>
+      
+  
+      
+  
+      <th class="last">Description</th>
+    </tr>
+    </thead>
+  
+    <tbody>
+    
+  
+          <tr>
+              
+                  <td class="name"><code>args</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">String</span>
+|
+
+<span class="param-type">Number</span>
+
+
+              
+              </td>
+  
+              
+                  <td class="attributes">
+                  
+  
+                  
+  
+                  
+                      &lt;repeatable><br>
+                  
+                  </td>
+              
+  
+              
+  
+              <td class="description last">The :splats followed by the request body</td>
+          </tr>
+  
+    
+    </tbody>
+  </table>
+</div>
+
+    
+    
+    
+<dl class="details">
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+
+  
+
+  
+
+  
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    A Promise that resolves when the <a href="Request.html"><code>Request</code></a> has executed successfully, and rejects when it failed to do so.
+</div>
+
+
+
+<dl>
+  <dt>
+    Type
+  </dt>
+  <dd>
+    
+<span class="param-type">Promise</span>
+
+
+  </dd>
+</dl>
+
+
+        
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">// route: &#x27;/user/:id&#x27;
+request.execute(56);
+// route: &#x27;/user/:id/:id2&#x27;
+request.execute(56, 57);
+// route: &#x27;/user/:id/:id2&#x27;, with request body
+request.execute(56, 57, {someData: true});</pre>
+
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="executeWithConnection"><span class="type-signature"></span>executeWithConnection<span class="signature">(connection, args)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Executes this <a href="Request.html"><code>Request</code></a> using a <a href="Connection.html"><code>Connection</code></a>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+<div class="params-table-container">
+  <table class="params table table-striped">
+      <thead>
+    <tr>
+      
+      <th>Name</th>
+      
+  
+      <th>Type</th>
+  
+      
+      <th>Argument</th>
+      
+  
+      
+  
+      <th class="last">Description</th>
+    </tr>
+    </thead>
+  
+    <tbody>
+    
+  
+          <tr>
+              
+                  <td class="name"><code>connection</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type"><a href="Connection.html">Connection</a></span>
+|
+
+<span class="param-type">String</span>
+
+
+              
+              </td>
+  
+              
+                  <td class="attributes">
+                  
+  
+                  
+  
+                  
+                  </td>
+              
+  
+              
+  
+              <td class="description last"><a href="Connection.html"><code>Connection</code></a> or name of a <a href="Connection.html"><code>Connection</code></a> to execute this <a href="Request.html"><code>Request</code></a> with</td>
+          </tr>
+  
+    
+  
+          <tr>
+              
+                  <td class="name"><code>args</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">*</span>
+
+
+              
+              </td>
+  
+              
+                  <td class="attributes">
+                  
+  
+                  
+  
+                  
+                      &lt;repeatable><br>
+                  
+                  </td>
+              
+  
+              
+  
+              <td class="description last">The rest of the arguments should be the :splats in the right order, the last argument (the one after the :splats) is the request body, so, if there are no :splats this argument is the request body. If there are :splats in the route, all :splats are required to be provided to this function.</td>
+          </tr>
+  
+    
+    </tbody>
+  </table>
+</div>
+
+    
+    
+    
+<dl class="details">
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+
+  
+
+  
+
+  
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    A Promise that resolves when the <a href="Request.html"><code>Request</code></a> has executed successfully, and rejects when it failed to do so.
+</div>
+
+
+
+<dl>
+  <dt>
+    Type
+  </dt>
+  <dd>
+    
+<span class="param-type">Promise</span>
+
+
+  </dd>
+</dl>
+
+
+        
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">// find by id request, route: &#x27;/user/:id&#x27;
+request.executeWithConnection(&#x27;local-xhr&#x27;, 13);</pre>
+
+
+    
+</dd>
+
+        </dl>
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+        </div>
+
+        <div class="clearfix"></div>
+        <footer>
+          
+          
+    <span class="copyright">
+    Rik Hoffbauer 2015
+    </span>
+          <br />
+          
+    <span class="jsdoc-message">
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc" target="_blank">JSDoc 3.4.0</a>
+    on 2015-12-01T13:53:50+01:00
+    </span>
+        </footer>
+      </div>
+
+      <br clear="both">
+    </div>
+
+  </div>
+  <!--<script src="scripts/sunlight.js"></script>-->
+  <script src="scripts/docstrap.lib.js"></script>
+  <script src="scripts/bootstrap-dropdown.js"></script>
+  <script src="scripts/toc.js"></script>
+
+  <script>
+    $( function () {
+      $( "[id*='$']" ).each( function () {
+        var $this = $( this );
+
+        $this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+      } );
+
+      $( "#toc" ).toc( {
+        anchorName  : function ( i, heading, prefix ) {
+          return $( heading ).attr( "id" ) || ( prefix + i );
+        },
+        selectors   : "h1,h2,h3,h4",
+        showAndHide : false,
+        scrollTo    : "100px"
+      } );
+
+      $( "#toc>ul" ).addClass( "nav nav-pills nav-stacked" );
+      $( "#main span[id^='toc']" ).addClass( "toc-shim" );
+      $( '.dropdown-toggle' ).dropdown();
+//      $( ".tutorial-section pre, .readme-section pre" ).addClass( "sunlight-highlight-javascript" ).addClass( "linenums" );
+
+      $( ".tutorial-section pre, .readme-section pre" ).each( function () {
+        var $this = $( this );
+
+        var example = $this.find( "code" );
+        exampleText = example.html();
+        var lang = /{@lang (.*?)}/.exec( exampleText );
+        if ( lang && lang[1] ) {
+          exampleText = exampleText.replace( lang[0], "" );
+          example.html( exampleText );
+          lang = lang[1];
+        } else {
+          lang = "javascript";
+        }
+
+        if ( lang ) {
+
+          $this
+            .addClass( "sunlight-highlight-" + lang )
+            .addClass( "linenums" )
+            .html( example.html() );
+
+        }
+      } );
+
+      Sunlight.highlightAll( {
+        lineNumbers : true,
+        showMenu : true,
+        enableDoclinks : true
+      } );
+    } );
+   </script>
+
+
+
+  <!--Navigation and Symbol Display-->
+  
+
+
+  <!--Google Analytics-->
+  
+
+</body>
+</html>
