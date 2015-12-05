@@ -1,0 +1,3 @@
+[submodule "modules/frontend-policies"]
+	path = modules/frontend-policies
+	url = https://github.com/jewetnitg/policies.git
