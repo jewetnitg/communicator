@@ -1,0 +1,4 @@
+[submodule "modules/policies"]
+	path = modules/policies
+	url = https://github.com/jewetnitg/policies.git 
+	branch = master
