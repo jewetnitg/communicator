@@ -3,10 +3,13 @@
  */
 import _ from 'lodash';
 
+import PolicyExecutor from 'frontend-policies';
+
 import Adapter from './Adapter';
 import Connection from './Connection';
 import Request from './Request';
 
+// @todo refactor out, put it on Communicator itself
 const singletons = {
   adapters: {},
   connections: {},
@@ -52,6 +55,9 @@ function Communicator(options = {}) {
   singletons.requests[options.name] = {};
   singletons.servers[options.name] = {};
 
+  const policyExecutor = options.policyExecutor || PolicyExecutor();
+  policyExecutor.add(options.policies);
+
   const props = {
     /**
      * Name of the {@link Communicator} instance
@@ -76,6 +82,10 @@ function Communicator(options = {}) {
      */
     options: {
       value: options
+    },
+    policyExecutor: {
+      writable: true,
+      value: policyExecutor
     }
   };
 
@@ -237,6 +247,22 @@ Communicator.prototype = {
    */
   get requests() {
     return singletons.requests[this.name];
+  },
+
+  /**
+   * Executes one or more policies with data
+   *
+   * @method policy
+   * @memberof Communicator
+   * @instance
+   *
+   * @param policy {String|Array<String>} Policy / policies to execute
+   * @param {Object} [data={}] Data / params to set on the policy 'request'
+   *
+   * @returns {Promise}
+   */
+  policy(policy = [], data = {}) {
+    return this.policyExecutor.execute(policy, data);
   },
 
   /**

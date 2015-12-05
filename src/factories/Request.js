@@ -60,6 +60,7 @@ import extractSplatsFromRoute from '../helpers/extractSplatsFromRoute';
  *
  */
 function Request(options = {}) {
+  _.defaults(options, Request.defaults);
   RequestValidator.construct(options);
 
   let dst = options.communicator.requests[options.connection];
@@ -83,6 +84,9 @@ function Request(options = {}) {
             return (options.prepare ? options.prepare.bind(this) : Promise.resolve.bind(Promise))(data);
           })
       }
+    },
+    policies: {
+      value: options.policies || []
     },
     method: {
       value: options.method
@@ -108,6 +112,10 @@ function Request(options = {}) {
 
   return request;
 }
+
+Request.defaults = {
+  method: 'get'
+};
 
 Request.prototype = {
 
@@ -137,16 +145,22 @@ Request.prototype = {
 
     return this.prepare(data)
       .then((_data) => {
-        return _connection.request({
-            url: replaceSplatsInRouteWithData(this.route, splats),
-            data: _data,
-            method: this.method
+        return this.communicator.policy(this.policies, _data)
+          .then(() => {
+            return _connection.request({
+                url: replaceSplatsInRouteWithData(this.route, splats),
+                data: _data,
+                method: this.method
+              })
+              .then((__data) => {
+                return this.resolve(__data, data);
+              })
+              .catch((__data) => {
+                return this.reject(__data, data);
+              })
           })
-          .then((__data) => {
-            return this.resolve(__data, data);
-          })
-          .catch((__data) => {
-            return this.reject(__data, data);
+          .catch(() => {
+            return Promise.reject("You are not allowed to execute this request");
           })
       });
   },
