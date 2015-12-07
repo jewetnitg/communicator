@@ -4,6 +4,7 @@
   "description": "frontend-communicator is a modular browserify module that serves as an interface to the server, representing server controllers as functions that return Promises. Server communications are abstracted using Requests, Connections and Adapters, where Adapters perform that actual transport of data between the client and server. Connections are a combination of a url and an Adapter, a Request is combination of various properties including but not limited to a Connection, route and method.",
   "main": "index.js",
   "scripts": {
+    "preinstall": "npm --prefix modules/frontend-policies install",
     "build": "gulp build",
     "test": "gulp test",
     "ci": "gulp test:ci"
@@ -25,6 +26,9 @@
     ]
   },
   "eslintConfig": {},
+  "bundledDependencies": [
+    "frontend-policies"
+  ],
   "dependencies": {
     "babel-polyfill": "^6.3.14",
     "frontend-policies": "file:modules/frontend-policies",
