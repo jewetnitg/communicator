@@ -1,6 +1,6 @@
 {
   "name": "frontend-communicator",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "frontend-communicator is a modular browserify module that serves as an interface to the server, representing server controllers as functions that return Promises. Server communications are abstracted using Requests, Connections and Adapters, where Adapters perform that actual transport of data between the client and server. Connections are a combination of a url and an Adapter, a Request is combination of various properties including but not limited to a Connection, route and method.",
   "main": "index.js",
   "scripts": {
@@ -29,6 +29,7 @@
     "frontend-policies"
   ],
   "dependencies": {
+    "frontend-policies": "^0.0.2",
     "babel-polyfill": "^6.3.14",
     "jquery": "2.1.4",
     "lodash": "^3.10.1",
