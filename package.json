@@ -1,10 +1,9 @@
 {
   "name": "frontend-communicator",
-  "version": "0.0.9",
+  "version": "1.0.0",
   "description": "frontend-communicator is a modular browserify module that serves as an interface to the server, representing server controllers as functions that return Promises. Server communications are abstracted using Requests, Connections and Adapters, where Adapters perform that actual transport of data between the client and server. Connections are a combination of a url and an Adapter, a Request is combination of various properties including but not limited to a Connection, route and method.",
   "main": "index.js",
   "scripts": {
-    "preinstall": "npm --prefix modules/frontend-policies install",
     "build": "gulp build",
     "test": "gulp test",
     "ci": "gulp test:ci"
@@ -31,7 +30,6 @@
   ],
   "dependencies": {
     "babel-polyfill": "^6.3.14",
-    "frontend-policies": "file:modules/frontend-policies",
     "jquery": "2.1.4",
     "lodash": "^3.10.1",
     "require-globify": "^1.3.0"
