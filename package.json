@@ -25,9 +25,6 @@
     ]
   },
   "eslintConfig": {},
-  "bundledDependencies": [
-    "frontend-policies"
-  ],
   "dependencies": {
     "frontend-policies": "^0.0.2",
     "babel-polyfill": "^6.3.14",
