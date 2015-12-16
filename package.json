@@ -26,11 +26,13 @@
   },
   "eslintConfig": {},
   "dependencies": {
-    "frontend-policies": "^0.0.2",
     "babel-polyfill": "^6.3.14",
+    "frontend-middleware": "^0.0.1",
     "jquery": "2.1.4",
     "lodash": "^3.10.1",
-    "require-globify": "^1.3.0"
+    "require-globify": "^1.3.0",
+    "sails.io.js": "^0.11.7",
+    "socket.io-client": "^1.3.7"
   },
   "devDependencies": {
     "babel": "5.8.23",

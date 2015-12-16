@@ -2,8 +2,7 @@
  * @author rik
  */
 import _ from 'lodash';
-
-import PolicyExecutor from 'frontend-policies';
+import MiddlewareRunner from 'frontend-middleware';
 
 import Adapter from './Adapter';
 import Connection from './Connection';
@@ -30,8 +29,6 @@ const singletons = {
  * @property requests {Object<Object>} {@link Request}s that should be registered on construct
  *
  * @todo validate options
- * @todo allow for policies to be passed in when constructing
- * @todo auto-set a name if none is provided
  *
  * @example
  * import Communicator from 'frontend-communicator';
@@ -41,6 +38,9 @@ const singletons = {
  *   name: 'some-unique-name-for-the-communicator',
  *   defaultConnection: 'local-xhr',
  *   defaultAdapter: 'XHR',
+ *   middleware: {
+ *     security: {}
+ *   },
  *   adapters: {...},
  *   connections: {...},
  *   requests: {...}
@@ -50,13 +50,20 @@ const singletons = {
  * export default communicator;
  */
 function Communicator(options = {}) {
+  _.defaults(options, Communicator.defaults, {
+    name: 'communicator-' + _.uniqueId()
+  });
+
   singletons.adapters[options.name] = {};
   singletons.connections[options.name] = {};
   singletons.requests[options.name] = {};
   singletons.servers[options.name] = {};
 
-  const policyExecutor = options.policyExecutor || PolicyExecutor();
-  policyExecutor.add(options.policies);
+  const middlewareRunner = MiddlewareRunner({
+    security: {
+      middleware: options.middleware.security
+    }
+  });
 
   const props = {
     /**
@@ -83,9 +90,8 @@ function Communicator(options = {}) {
     options: {
       value: options
     },
-    policyExecutor: {
-      writable: true,
-      value: policyExecutor
+    middlewareRunner: {
+      value: middlewareRunner
     }
   };
 
@@ -109,6 +115,10 @@ function Communicator(options = {}) {
 
   return communicator;
 }
+
+Communicator.defaults = {
+  middleware: {}
+};
 
 function runFactory(factory, hashMap, defaults = {}) {
   _.each(hashMap, (obj, name) => {
@@ -250,19 +260,19 @@ Communicator.prototype = {
   },
 
   /**
-   * Executes one or more policies with data
+   * Executes one or more security middleware with data
    *
-   * @method policy
+   * @method middleware
    * @memberof Communicator
    * @instance
    *
-   * @param policy {String|Array<String>} Policy / policies to execute
-   * @param {Object} [data={}] Data / params to set on the policy 'request'
+   * @param middleware {String|Array<String>} Security middleware to execute
+   * @param {Object} [data={}] Data / params to set on the middleware 'request'
    *
    * @returns {Promise}
    */
-  policy(policy = [], data = {}) {
-    return this.policyExecutor.execute(policy, data);
+  security(middleware = [], data = {}) {
+    return this.middlewareRunner.security.run(middleware, data);
   },
 
   /**

@@ -20,6 +20,9 @@ import AdapterValidator from '../validators/Adapter';
  * @property on {function(event, callback)} Function that should listen for a server event and trigger a callback when it occurs.
  * @property trigger {function(event, data)} Function that should trigger a server event with data.
  *
+ * @todo add upload method to the spec
+ * @todo dont' LazyLoad method on Adapter, LazyLoad method on Request and Connection
+ *
  * @returns {Adapter}
  * @example
  * const adapter = Adapter({
@@ -57,15 +60,27 @@ function Adapter(options = {}) {
   // validates the options object contains all properties needed to create an Adapter
   AdapterValidator.construct(options);
 
-  const adapter = options.communicator.adapters[options.name] = _.extend({
-    events: false
-  }, options);
+  const adapter = options.communicator.adapters[options.name] = _.defaults(options, Adapter.defaults);
 
+  // @todo refactor LazyLoader to {@link Request} and {@link Connection}?
   adapter.connect = LazyLoader(adapter.connect.bind(adapter));
   adapter.disconnect = LazyLoader(adapter.disconnect.bind(adapter));
   adapter.request = LazyLoader(adapter.request.bind(adapter));
 
   return adapter;
 }
+
+/**
+ * Default properties for all {@link Adapter}s
+ *
+ * @name defaults
+ * @memberof Adapter
+ * @static
+ * @type {Object}
+ * @property {Boolean} [events=false]
+ */
+Adapter.defaults = {
+  events: false
+};
 
 export default Adapter;

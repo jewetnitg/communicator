@@ -145,7 +145,7 @@ Connection.prototype = {
     if (this.connected) {
       return Promise.resolve();
     } else {
-      return this.adapter.connect(this.url)
+      return this.adapter.connect(this)
         .then((data) => {
           this.connected = true;
           return data;
@@ -170,7 +170,7 @@ Connection.prototype = {
     if (!this.connected) {
       return Promise.resolve();
     } else {
-      return this.adapter.disconnect(this.url)
+      return this.adapter.disconnect(this)
         .then((data) => {
           this.connected = false;
           return data;
@@ -206,7 +206,17 @@ Connection.prototype = {
     // ensure the Connection is connected
     return this.connect()
       .then(() => {
-        return this.adapter.request(options);
+        return this.adapter.request(this, options);
+      });
+  },
+
+  /**
+   *
+   */
+  subscribe(modelName, callback) {
+    return this.connect()
+      .then(() => {
+        return this.adapter.subscribe(this, modelName, callback);
       });
   },
 
@@ -224,7 +234,10 @@ Connection.prototype = {
    * connection.on('serverEvent', function callback(data) {});
    */
   on(event, eventHandler) {
-    this.adapter.on(event, eventHandler);
+    return this.connect()
+      .then(() => {
+        return this.adapter.on(this, event, eventHandler);
+      });
   },
 
   /**
@@ -241,7 +254,10 @@ Connection.prototype = {
    * connection.emit('serverEvent', data);
    */
   emit(event, data) {
-    this.adapter.emit(event, data);
+    return this.connect()
+      .then(() => {
+        return this.adapter.emit(this, event, data);
+      });
   },
 
   /**
@@ -322,6 +338,10 @@ Connection.prototype = {
       url,
       data
     });
+  },
+
+  upload(url, files, data) {
+    throw new Error(`Upload not implemented yet`);
   }
 
 };

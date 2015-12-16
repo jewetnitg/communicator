@@ -30,7 +30,6 @@ import extractSplatsFromRoute from '../helpers/extractSplatsFromRoute';
  *
  * @returns {Request}
  *
- * @todo add support for policies on requests
  * @todo allow requests not to be cached, like a login request for example
  *
  * @example
@@ -39,6 +38,7 @@ import extractSplatsFromRoute from '../helpers/extractSplatsFromRoute';
  *   connection: 'local-xhr',
  *   route: '/user/:id',
  *   method: 'get',
+ *   security: ['user.isLoggedIn'],
  *   // can also return a Promise that resolves with the transformed data, if the transformation is asynchronous
  *   prepare(data) {
  *     delete data.someValueOnlyRequiredByTheClient
@@ -85,8 +85,8 @@ function Request(options = {}) {
           })
       }
     },
-    policies: {
-      value: options.policies || []
+    security: {
+      value: options.security || []
     },
     method: {
       value: options.method
@@ -145,7 +145,7 @@ Request.prototype = {
 
     return this.prepare(data)
       .then((_data) => {
-        return this.communicator.policy(this.policies, _data)
+        return this.communicator.security(this.security, _data)
           .then(() => {
             return _connection.request({
                 url: replaceSplatsInRouteWithData(this.route, splats),
@@ -153,15 +153,14 @@ Request.prototype = {
                 method: this.method
               })
               .then((__data) => {
-                return this.resolve(__data, data);
-              })
-              .catch((__data) => {
-                return this.reject(__data, data);
-              })
-          })
-          .catch(() => {
+                  return this.resolve(__data, data);
+                },
+                (__data) => {
+                  return this.reject(__data, data);
+                });
+          }, () => {
             return Promise.reject("You are not allowed to execute this request");
-          })
+          });
       });
   },
 

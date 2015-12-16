@@ -7,15 +7,15 @@ const XHR = {
 
   name: 'XHR',
 
-  connect() {
+  connect(connection) {
     return Promise.resolve();
   },
 
-  disconnect() {
+  disconnect(connection) {
     return Promise.resolve();
   },
 
-  request(options) {
+  request(connection, options) {
     return new Promise((resolve, reject) => {
       $.ajax(options)
         .done((data) => {
