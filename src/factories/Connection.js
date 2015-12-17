@@ -211,12 +211,22 @@ Connection.prototype = {
   },
 
   /**
-   *
+   * @todo document
    */
   subscribe(modelName, callback) {
     return this.connect()
       .then(() => {
         return this.adapter.subscribe(this, modelName, callback);
+      });
+  },
+
+  /**
+   * @todo document
+   */
+  upload(files = [], options = {}, progress) {
+    return this.connect()
+      .then(() => {
+        return this.adapter.upload(this, files, options, progress);
       });
   },
 
@@ -338,10 +348,6 @@ Connection.prototype = {
       url,
       data
     });
-  },
-
-  upload(url, files, data) {
-    throw new Error(`Upload not implemented yet`);
   }
 
 };

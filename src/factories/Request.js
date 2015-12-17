@@ -16,6 +16,8 @@ import extractSplatsFromRoute from '../helpers/extractSplatsFromRoute';
  *
  * @property name {String} The name, specific, behaves like a path (name: 'user.login' will result in requests.user.login)
  *
+ * @property upload {Boolean} If set to true, this request is handled as an upload by its {@link Connection} and {@link Adapter}
+ *
  * @property connection {String} The name of the {@link Connection} this {@link Request} should use to execute itself
  *
  * @property route {String} The route of this {@link Request}, '/user/:id' for example
@@ -75,6 +77,15 @@ function Request(options = {}) {
     },
     route: {
       value: options.route
+    },
+    upload: {
+      value: options.upload
+    },
+    filesAttribute: {
+      value: options.filesAttribute
+    },
+    progress: {
+      value: options.progress
     },
     prepare: {
       // ensure prepare returns a Promise
@@ -137,21 +148,28 @@ Request.prototype = {
    */
   executeWithConnection(connection, ...args) {
     const splats = args.slice(0, this.splats.length);
-    const data = args[this.splats.length];
-
+    const data = this.upload ? args[this.splats.length + 1] : args[this.splats.length];
+    const files = this.upload ? args[this.splats.length] : [];
     RequestValidator.executeWithConnection(this, connection, splats);
 
     const _connection = typeof connection === 'string' ? this.communicator.connections[connection] : connection;
 
-    return this.prepare(data)
+    return this.prepare(data, files)
       .then((_data) => {
         return this.communicator.security(this.security, _data)
           .then(() => {
-            return _connection.request({
-                url: replaceSplatsInRouteWithData(this.route, splats),
-                data: _data,
-                method: this.method
-              })
+            const options = {
+              url: replaceSplatsInRouteWithData(this.route, splats),
+              data: _data,
+              filesAttribute: this.filesAttribute,
+              method: this.method
+            };
+
+            const promise = this.upload
+              ? _connection.upload(files, options, this.progress ? this.progress.bind(this) : null)
+              : _connection.request(options);
+
+            return promise
               .then((__data) => {
                   return this.resolve(__data, data);
                 },

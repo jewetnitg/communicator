@@ -1,6 +1,7 @@
 /**
  * @author rik
  */
+import path from 'path';
 import socketIoClient from 'socket.io-client';
 //noinspection JSFileReferences
 import sailsIoClient from 'sails.io.js';
@@ -13,6 +14,54 @@ const SAILS_IO = {
   socketIoClient,
 
   events: true,
+
+  // @todo implement aborting an upload (add abort method to Request?)
+  // @todo figure out if we need CSRF token
+  upload(connection, files, options, progress) {
+    _.defaults(options, {
+      filesAttribute: 'files'
+    });
+    return new Promise((resolve, reject) => {
+      var formData = new FormData();
+      var xhr = new XMLHttpRequest();
+
+      /* Required for large files */
+      //xhr.setRequestHeader('X-CSRF-Token', csrfToken);
+
+      _.each(files, (val) => {
+        if (val instanceof FileList) {
+          _.each(val, (_val) => {
+            formData.append(options.filesAttribute, _val);
+          });
+        } else {
+          formData.append(options.filesAttribute, val);
+        }
+      });
+
+      _.each(options.data, (val, key) => {
+        formData.append(key, val);
+      });
+
+      //formData.append('_csrf', csrfToken);
+      const url = connection.url + options.url;
+      xhr.open(options.method.toUpperCase() || 'GET', url, true);
+      xhr.send(formData);
+
+      xhr.onprogress = function (_data) {
+        if (typeof progress === 'function') {
+          progress(_data);
+        }
+      };
+
+      xhr.onerror = function (_data) {
+        reject(_data);
+      };
+
+      xhr.onload = function (_data) {
+        resolve(_data);
+      };
+    });
+  },
 
   subscribe(connection, modelName, callback) {
     return this.request(connection, {
