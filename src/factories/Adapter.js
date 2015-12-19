@@ -1,7 +1,5 @@
 import _ from 'lodash';
 
-import LazyLoader from './LazyLoader';
-
 import AdapterValidator from '../validators/Adapter';
 
 /**
@@ -19,9 +17,6 @@ import AdapterValidator from '../validators/Adapter';
  * @property request {function(data)} Function that should return a Promise that resolves when a request has been successfully executed, and rejects when it failed to do so. The data object contains a url, method and data property.
  * @property on {function(event, callback)} Function that should listen for a server event and trigger a callback when it occurs.
  * @property trigger {function(event, data)} Function that should trigger a server event with data.
- *
- * @todo add upload method to the spec
- * @todo dont' LazyLoad method on Adapter, LazyLoad method on Request and Connection
  *
  * @returns {Adapter}
  * @example
@@ -60,14 +55,7 @@ function Adapter(options = {}) {
   // validates the options object contains all properties needed to create an Adapter
   AdapterValidator.construct(options);
 
-  const adapter = options.communicator.adapters[options.name] = _.defaults(options, Adapter.defaults);
-
-  // @todo refactor LazyLoader to {@link Request} and {@link Connection}?
-  adapter.connect = LazyLoader(adapter.connect.bind(adapter));
-  adapter.disconnect = LazyLoader(adapter.disconnect.bind(adapter));
-  adapter.request = LazyLoader(adapter.request.bind(adapter));
-
-  return adapter;
+  return options.communicator.adapters[options.name] = _.defaults(options, Adapter.defaults);
 }
 
 /**

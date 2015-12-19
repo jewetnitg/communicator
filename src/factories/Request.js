@@ -7,6 +7,8 @@ import RequestValidator from '../validators/Request';
 import replaceSplatsInRouteWithData from '../helpers/replaceSplatsInRouteWithData';
 import extractSplatsFromRoute from '../helpers/extractSplatsFromRoute';
 
+import LazyLoader from './LazyLoader';
+
 /**
  * A {@link Request} represents a blueprint for a request to the server, it uses a {@link Connection} and the properties listed below to do so.
  *
@@ -31,8 +33,6 @@ import extractSplatsFromRoute from '../helpers/extractSplatsFromRoute';
  * @property {Function} [reject=Promise.reject] Function that is called when the {@link Request} is executed unsuccessfully, allows for data response body transformation, can work asynchronously by returning a Promise, if synchronous can just return the value. Even allows for resolving a rejected request.
  *
  * @returns {Request}
- *
- * @todo allow requests not to be cached, like a login request for example
  *
  * @example
  * cons request = Request({
@@ -65,12 +65,20 @@ function Request(options = {}) {
   _.defaults(options, Request.defaults);
   RequestValidator.construct(options);
 
+  const connection = options.communicator.connections[options.connection];
   let dst = options.communicator.requests[options.connection];
   let serverDst = options.communicator.servers[options.connection];
+
+  _.defaults(options, {
+    cache: connection.cache
+  });
 
   const props = {
     name: {
       value: options.name
+    },
+    cache: {
+      value: options.cache
     },
     connection: {
       value: options.communicator.connections[options.connection]
@@ -117,6 +125,10 @@ function Request(options = {}) {
   };
 
   const request = Object.create(Request.prototype, props);
+
+  if (!isNaN(parseInt(request.cache), 10)) {
+    request.cachedExecuteWithConnection = LazyLoader(request.executeWithConnection.bind(request), request.cache);
+  }
 
   _.set(dst, options.name, request);
   _.set(serverDst, options.name, request.execute.bind(request));
@@ -202,7 +214,12 @@ Request.prototype = {
    */
   execute(...args) {
     args.unshift(this.connection);
-    return this.executeWithConnection.apply(this, args);
+
+    if (this.cache) {
+      return this.cachedExecuteWithConnection.apply(this, args);
+    } else {
+      return this.executeWithConnection.apply(this, args);
+    }
   }
 
 };

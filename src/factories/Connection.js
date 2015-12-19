@@ -4,6 +4,8 @@ import ConnectionValidator from '../validators/Connection';
 import Request from './Request';
 import concatenateUrls from '../helpers/concatenateUrls';
 
+import LazyLoader from './LazyLoader';
+
 /**
  *
  * @class Connection
@@ -41,6 +43,9 @@ function Connection(options = {}) {
     },
     url: {
       value: options.url
+    },
+    cache: {
+      value: options.cache
     },
     adapter: {
       value: options.communicator.adapters[options.adapter]
@@ -86,6 +91,13 @@ function Connection(options = {}) {
   };
 
   const connection = options.communicator.connections[options.name] = Object.create(Connection.prototype, props);
+
+  if (!isNaN(parseInt(connection.cache), 10)) {
+    connection.connect = LazyLoader(connection.connect.bind(connection), connection.cache);
+    connection.disconnect = LazyLoader(connection.disconnect.bind(connection), connection.cache);
+    connection.cachedUpload = LazyLoader(connection.upload.bind(connection), connection.cache);
+    connection.cachedRequest = LazyLoader(connection.request.bind(connection), connection.cache);
+  }
 
   _.each(options.requests, (request, name) => {
     request.name = request.name || name;
