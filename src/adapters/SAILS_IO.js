@@ -58,7 +58,14 @@ const SAILS_IO = {
       };
 
       xhr.onload = function (_data) {
-        resolve(_data);
+        var response = _data.currentTarget.responseText;
+
+        if (_data.currentTarget.status >= 200 && _data.currentTarget.status < 400) {
+          resolve(response);
+        } else {
+          reject(response);
+        }
+
       };
     });
   },
