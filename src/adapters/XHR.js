@@ -15,6 +15,7 @@ const XHR = {
     return Promise.resolve();
   },
 
+  // @todo refactor to use es6 fetch, see https://github.com/github/fetch
   request(connection, options) {
     return new Promise((resolve, reject) => {
       $.ajax(options)
