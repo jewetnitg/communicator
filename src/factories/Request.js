@@ -145,6 +145,7 @@ Request.prototype = {
   /**
    * Executes this {@link Request} using a {@link Connection}
    *
+   * @todo pass route splats (/path variables) as params and data (/request body) as data
    * @method executeWithConnection
    * @instance
    * @memberOf Request

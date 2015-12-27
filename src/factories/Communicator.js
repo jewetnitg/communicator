@@ -60,9 +60,8 @@ function Communicator(options = {}) {
   singletons.servers[options.name] = {};
 
   const middlewareRunner = MiddlewareRunner({
-    security: {
-      middleware: options.middleware.security
-    }
+    middleware: options.middleware.security,
+    session: options.session
   });
 
   const props = {
@@ -117,7 +116,8 @@ function Communicator(options = {}) {
 }
 
 Communicator.defaults = {
-  middleware: {}
+  middleware: {},
+  session: {}
 };
 
 function runFactory(factory, hashMap, defaults = {}) {
@@ -272,7 +272,7 @@ Communicator.prototype = {
    * @returns {Promise}
    */
   security(middleware = [], data = {}) {
-    return this.middlewareRunner.security.run(middleware, data);
+    return this.middlewareRunner.execute(middleware, data);
   },
 
   /**
